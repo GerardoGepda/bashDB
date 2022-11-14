@@ -11,34 +11,57 @@ done <$file
 let newID=cont+1
 
 case $1 in
-   "libro")
-      if [[ ! -z $2 ]] && [[ ! -z $3 ]] && [[ ! -z $4 ]]
-      then
-         echo "$newID;$2;$3;$4" >> $file
-         dialog --title "INSERT" --msgbox "Se inserto el libro" 0 0
-      else
-         echo "Datos incompletos"
-      fi
+"libro")
+   if [[ ! -z $2 ]] && [[ ! -z $3 ]] && [[ ! -z $4 ]]; then
+      echo "$newID;$2;$3;$4" >>$file
+      dialog --title "INSERT" --msgbox "Se inserto el libro" 0 0
+   else
+      echo "Datos incompletos"
+   fi
    ;;
-   "persona")
-      if [[ ! -z $2 ]]
-      then
-         echo "$newID;$2" >> $file
-         dialog --title "INSERT" --msgbox "Se inserto la persona" 0 0
-      else
-         echo "Datos incompletos"
-      fi
+"persona")
+   if [[ ! -z $2 ]]; then
+      echo "$newID;$2" >>$file
+      dialog --title "INSERT" --msgbox "Se inserto la persona" 0 0
+   else
+      echo "Datos incompletos"
+   fi
    ;;
-   "prestamo")
-      if [[ ! -z $2 ]] && [[ ! -z $3 ]] && [[ ! -z $4 ]]
-      then
-         echo "$newID;$2;$3;$4" >> $file
+"prestamo")
+   if [[ ! -z $2 ]] && [[ ! -z $3 ]] && [[ ! -z $4 ]]; then
+      fileLibro="tables/libro"
+      filePersona="tables/persona"
+      idLibro=""
+      idPersona=""
+
+      while read -r line; do
+         idLibro=$(echo "$line" | awk -F ";" '{print $1}')
+         if [ $idLibro != $2 ]; then
+            idLibro=""
+         fi
+      done <$fileLibro
+
+      while read -r line; do
+         idPersona=$(echo "$line" | awk -F ";" '{print $1}')
+         if [ $idPersona != $4 ]; then
+            idPersona=""
+         fi
+      done <$fileLibro
+
+      if [ $idLibro="" ]; then
+         dialog --title "Error" --msgbox "La persona ingresada no existe" 0 0
+      elif [ $idPersona="" ]; then
+         dialog --title "Error" --msgbox "El libro ingresado no existe" 0 0
+      else
+         echo "$newID;$2;$3;$4" >>$file
          dialog --title "INSERT" --msgbox "Se inserto el prestamo" 0 0
-      else
-         echo "Datos incompletos"
       fi
+
+   else
+      echo "Datos incompletos"
+   fi
    ;;
-   *)
-      echo "tabla inexistente"
+*)
+   echo "tabla inexistente"
    ;;
 esac
