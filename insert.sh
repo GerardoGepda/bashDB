@@ -8,7 +8,7 @@ while read -r line; do
 done <$file
 
 #creando nuevo id
-let newID=cont+1
+let newID=cont
 
 case $1 in
 "libro")
@@ -35,22 +35,20 @@ case $1 in
       idPersona=""
 
       while read -r line; do
-         idLibro=$(echo "$line" | awk -F ";" '{print $1}')
-         if [ $idLibro != $2 ]; then
-            idLibro=""
+         if [ $(echo "$line" | awk -F ";" '{print $1}') = $2 ]; then
+            idLibro=$(echo "$line" | awk -F ";" '{print $1}')
          fi
       done <$fileLibro
 
       while read -r line; do
-         idPersona=$(echo "$line" | awk -F ";" '{print $1}')
-         if [ $idPersona != $4 ]; then
-            idPersona=""
+         if [ $(echo "$line" | awk -F ";" '{print $1}') = $4 ]; then
+            idPersona=$(echo "$line" | awk -F ";" '{print $1}')
          fi
-      done <$fileLibro
+      done <$filePersona
 
-      if [ $idLibro="" ]; then
+      if [ -z $idPersona ] ; then
          dialog --title "Error" --msgbox "La persona ingresada no existe" 0 0
-      elif [ $idPersona="" ]; then
+      elif [ -z $idLibro ] ; then
          dialog --title "Error" --msgbox "El libro ingresado no existe" 0 0
       else
          echo "$newID;$2;$3;$4" >>$file

@@ -65,5 +65,7 @@ while :; do
 		break
 		;;
 	esac
+	
+	clear
 done
 clear

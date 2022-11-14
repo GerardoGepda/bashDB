@@ -2,8 +2,12 @@
 
 if [[ ! -z $1 ]]; then
    file="tables/$1"
-   info=$(awk -F ";" '{print $1"\t"$2"\t"$3"\t"$4}' $file)
-   dialog --title "Tabla: $1" --msgbox "$info" 0 0
+   if [ $1 = "persona" ]; then
+      info=$(awk 'BEGIN{FS=";";OFS=" - "} {print $1,$2}' $file)
+   else
+      info=$(awk 'BEGIN{FS=";";OFS=" - "} {print $1,$2,$3,$4}' $file)
+   fi
+   dialog --title "Tabla: $1" --msgbox "$info" 20 60
 else
    dialog --title "Error" --msgbox "Debe especificar la tabla" 0 0
 fi
