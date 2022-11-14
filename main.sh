@@ -49,13 +49,17 @@ do
 	7)
 		idbook=`$fundialog --stdout --title "Actualizar Libro" --inputbox "Ingresar ID del libro: " 0 0`
 		clear
+		./update.sh "libro" "$idbook"
+		clear
 	;;
 	8)
 		idperson=`$fundialog --stdout --title "Actualizar Persona" --inputbox "Ingresar ID de la persona: " 0 0`
 		clear
+		./update.sh "persona" "$idperson"
+		clear
 	;;
 	9)
-		dialog --title "Integrantes del grupo" --msgbox "Fernando Bonilla\nGerardo Palacios\nJael Rivas" 0 0
+		dialog --title "Integrantes del grupo" --msgbox "Fernando Bonilla BO200360\nGerardo Palacios PD200491\nJael Rivas RJ202336" 0 0
 		clear
 	;;
 	10)
